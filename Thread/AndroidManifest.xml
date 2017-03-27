@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="test.gps"
+    android:versionCode="1"
+    android:versionName="1.0"
+     android:installLocation="preferExternal" >
+
+    <uses-sdk android:minSdkVersion="16" />
+
+    <uses-permission android:name="android.permission.ACCESS_MOCK_LOCATION" >
+    </uses-permission>
+    <!-- 화면 밝기 퍼미션 -->
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
+    <!-- 서비스 관련 퍼미션 -->
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_SERVICE" />
+    <!-- 폰 고유 값 퍼미션 -->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <application
+        android:icon="@drawable/icon"
+        android:label="@string/app_name" >
+        <activity
+            android:name="test.gps2.MainActivity"
+            android:label="@string/app_name" >
+        </activity>
+        
+        <!-- 플레이스 엑티비티 -->
+        <activity
+            android:name="test.gps2.PlaceActivity"
+            android:label="Y-BUS" >
+        </activity>
+        
+        
+        <activity
+            android:name="test.gps2.SplashActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:label="Y-BUS" ><!-- 가로화면 튕김방지 -->
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>
