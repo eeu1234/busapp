@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:stretchColumns="1" >
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:minHeight="100dp"
+        android:text="기기 번호"
+        android:textColor="#ffff"
+        android:textSize="30px"
+        android:textStyle="bold" />
+
+    <EditText
+        android:id="@+id/deviceId"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="#f777"
+        android:editable="false"
+        android:minHeight="50dp"
+        android:padding="4px"
+        android:textAlignment="center"
+        android:textColor="#ffff"
+        android:textSize="30px"
+        android:textStyle="bold" />
+
+</TableLayout>

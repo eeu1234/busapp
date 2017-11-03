@@ -1,0 +1,11 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.test.gps2.SignActivity" >
+
+    <item
+        android:id="@+id/initialize"
+        android:title="Clear">
+    </item>
+  
+
+</menu>

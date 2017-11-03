@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="hello">Hello World, TstGPSActivity!</string>
-    <string name="app_name">TstGPS</string>
+
+    <string name="app_name">Cambus(버스기사용)</string>
+    <string name="action_settings">Settings</string>
+
 </resources>

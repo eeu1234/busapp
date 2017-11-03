@@ -21,21 +21,28 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.telephony.TelephonyManager;
 import android.util.Log;
+import android.view.WindowManager;
+import android.widget.EditText;
 import android.widget.Toast;
+import test.gps.R;
 
 public class PlaceActivity extends Activity implements Serializable {
 	private static final long serialVersionUID = 1L;
 	int SPLASH_TIME = 2000;
 
 	public static ArrayList<BusStopDTO> list;
+	public EditText deviceIdText;
 
 	private AQuery aq = new AQuery(this);
 	String str = null;
-	 String url ="http://ybus.kro.kr/ybus/ybus/exchangeJson/getBsList.do";  // deviceId 전
+	 //String url ="http://ybus.kro.kr/ybus/ybus/exchangeJson/getBsList.do";  // deviceId 전
+	 //String url ="http:// .63.89.33:8090/spring/android/ajaxFirst.action";  // deviceId 전
+//	 String url ="http://eeu1234.iptime.org:8080/spring/android/ajaxFirst.action";  // deviceId 전
+	 String url ="http://cambus.kr/spring/android/ajaxFirst.action";  // deviceId 전
+	// String url ="http://192.168.1.243:8080/spring/android/ajaxFirst.action";  // miu
 	 
 	 
 	// "http://asmr.kro.kr:8181/ybus/ybus/exchangeJson/getBsList.do?busId=gs1";
-	//String url = "http://eeu1234.iptime.org:8090/parameter/getparameter.do";
 	
 	String deviceId = "";
 	HashMap<String, Object> map = new HashMap<String, Object>();
@@ -43,14 +50,20 @@ public class PlaceActivity extends Activity implements Serializable {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_place);
+		deviceIdText = (EditText) findViewById(R.id.deviceId);
+		// 화면 항상 켜지
+		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
 
 		
 		//deviceId 불러온다.
 		deviceId = device();
+		deviceIdText.setText(deviceId);
 
 		// json 통신 시작
 		// id값 날리기
-		map.put("busId", deviceId);
+		map.put("deviceId", deviceId);
 		//url += deviceId;
 		//Log.d("adam", "deviceId"+deviceId);
 		//Log.d("adam", "url=   "+url);
@@ -65,28 +78,34 @@ public class PlaceActivity extends Activity implements Serializable {
 			public void callback(String url, String object, AjaxStatus status) {
 
 				if (object != null) {
-				//Log.d("adam", "obj=   "+object);
+				Log.d("adam", "obj=   "+object);
 
 					try {
 
 						try {
+
 							JSONObject jsonResponse = new JSONObject(object);
+
 							JSONObject tempJson = jsonResponse.getJSONObject("businfo");
 							
-							//Log.d("adam", "tempJson=   "+tempJson);
+							Log.d("adam", "tempJson=   "+tempJson);
 							
-							String busNum = tempJson.getString("bpk");
-							String intervalTime = tempJson.getString("term");
-							String newUrl = tempJson.getString("url");
+							String deviceSeq = tempJson.getString("deviceSeq");
+							String intervalTime = tempJson.getString("intervalTime");
+							String intervalDistance = tempJson.getString("intervalDistance");
+							String newUrl = tempJson.getString("newUrl");
 
-							Log.d("adam", "busNum=   "+busNum);
+							Log.d("adam", "deviceSeq=   "+deviceSeq);
 							Log.d("adam", "intervalTime=   "+intervalTime);
-							Log.d("adam", "newUrl=   "+newUrl);
+							Log.d("adam", "intervalDistance=   "+intervalTime);
+							Log.d("adam", "newUrl =   "+newUrl);
 							
 							Intent intent = new Intent(getBaseContext(), MainActivity.class);
-							intent.putExtra("busNum", busNum);// 키값,전송할 변수
-							intent.putExtra("intervalTime", intervalTime);// 키값,전송할 변수
-							intent.putExtra("newUrl", newUrl);// 키값,전송할 변수
+							intent.putExtra("deviceSeq", deviceSeq);// 버스 seq
+							intent.putExtra("intervalTime", intervalTime);// 전송 인터벌시간
+							intent.putExtra("intervalDistance", intervalDistance);// 전송 인터벌거리오차
+							intent.putExtra("newUrl", newUrl);// 전송 경로
+							intent.putExtra("deviceId", deviceId);// 버스 키 값
 							startActivity(intent);
 							finish();
 
@@ -127,6 +146,8 @@ public class PlaceActivity extends Activity implements Serializable {
 						public void run() {
 
 							data();
+							Toast.makeText(getApplicationContext(), "기기를 등록 해주세요 ", 2000).show();
+
 							System.out.println("재요청");
 						}
 					}, 5000);

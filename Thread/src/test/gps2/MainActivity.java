@@ -5,9 +5,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
 import java.util.Vector;
 
 import org.apache.http.HttpEntity;
@@ -19,25 +16,22 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.HTTP;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
-import DAO.BusStopDTO;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.location.GpsStatus;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.telephony.TelephonyManager;
-import android.util.Log;
+import android.view.View;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 import test.gps.R;
@@ -52,16 +46,19 @@ public class MainActivity extends Activity {
 	public EditText etLongitude;
 	public EditText etAccuracy;
 	public EditText etSpeed;
-	public EditText situation;
-	public EditText myStop;
+	public EditText deviceIdText;
 	public EditText countLocation;
-	public EditText turnBusStopNum;
-	public EditText upDown;
-	public EditText distanceText;
+	
+	
+	public Button signBtn;
+	
 
-	String busNum = "";
+	String deviceId = "";
+	String deviceSeq = "";
 	String intervalTime = "";
+	String intervalDistance = "";
 	String newUrl = "";
+
 	Location locationA = new Location("point A");// 현재 위치
 
 	int count = 0;
@@ -70,16 +67,42 @@ public class MainActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
+		
+		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
+		
 		etLatitude = (EditText) findViewById(R.id.etLatitude);
 		etLongitude = (EditText) findViewById(R.id.etLongitude);
 		etAccuracy = (EditText) findViewById(R.id.etAccuracy);
 		etSpeed = (EditText) findViewById(R.id.etSpeed);
-		situation = (EditText) findViewById(R.id.situation);
-		myStop = (EditText) findViewById(R.id.myStop);
+		deviceIdText = (EditText) findViewById(R.id.deviceId);
 		countLocation = (EditText) findViewById(R.id.countLocation);
-		turnBusStopNum = (EditText) findViewById(R.id.turnBusStopNum);
-		upDown = (EditText) findViewById(R.id.upDown);
-		distanceText = (EditText) findViewById(R.id.distanceText);
+		
+	
+		
+
+
+		//싸인패드 창 버튼 연결
+		findViewById(R.id.signBtn).setOnClickListener(
+				new Button.OnClickListener() {
+					public void onClick(View v) {
+						
+						Intent postIntent = new Intent(getApplicationContext(), DriveLog.class);
+						postIntent.putExtra("staffName", "");
+						postIntent.putExtra("driverName","");
+						postIntent.putExtra("distance", "");
+						postIntent.putExtra("destination", "");
+						postIntent.putExtra("purpose", "");
+						postIntent.putExtra("deviceSeq", deviceSeq);
+						startActivity(postIntent);
+
+						
+					}
+				}
+				
+				
+		);
+		
 
 		// GPS 켜져있는 지 여부 확인 후 안되있다면 설정창 뜸
 		chkGpsService();
@@ -88,9 +111,15 @@ public class MainActivity extends Activity {
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
 		Intent intent = getIntent();
-		busNum = getIntent().getStringExtra("busNum");
+		deviceSeq = getIntent().getStringExtra("deviceSeq");
 		intervalTime = getIntent().getStringExtra("intervalTime");
+		intervalDistance = getIntent().getStringExtra("intervalDistance");
 		newUrl = getIntent().getStringExtra("newUrl");
+		deviceId = getIntent().getStringExtra("deviceId");
+		deviceIdText.setText(deviceId);
+		
+		
+		
 
 		lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
@@ -104,9 +133,11 @@ public class MainActivity extends Activity {
 
 			try {
 
-				lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, Integer.parseInt(intervalTime), 50, locListenD);
+				lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, Integer.parseInt(intervalTime), Float.parseFloat(intervalDistance), locListenD);
 				
-
+			
+				
+				
 			} catch (Exception e) {
 				// TODO: handle exception
 				System.out.println("request error");
@@ -281,9 +312,12 @@ public class MainActivity extends Activity {
 				
 				// 전달할 인자들
 				Vector<NameValuePair> nameValue = new Vector<NameValuePair>();
-				nameValue.add(new BasicNameValuePair("bpk", busNum));
-				nameValue.add(new BasicNameValuePair("blat", locationA.getLatitude() + ""));
-				nameValue.add(new BasicNameValuePair("blng", locationA.getLongitude() + ""));
+				nameValue.add(new BasicNameValuePair("deviceSeq", deviceSeq));
+				nameValue.add(new BasicNameValuePair("deviceLat", locationA.getLatitude() + ""));
+				nameValue.add(new BasicNameValuePair("deviceLng", locationA.getLongitude() + ""));
+
+				
+				
 				System.out.println("자료전송 성공");
 
 				// 웹 접속 - utf-8 방식으로
@@ -292,6 +326,8 @@ public class MainActivity extends Activity {
 
 				HttpClient client = new DefaultHttpClient();
 				HttpResponse res = client.execute(request);
+				
+				
 				// 웹 서버에서 값받기
 				HttpEntity entityResponse = res.getEntity();
 				InputStream im = entityResponse.getContent();

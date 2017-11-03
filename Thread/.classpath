@@ -5,6 +5,11 @@
 	<classpathentry kind="src" path="gen"/>
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.DEPENDENCIES"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/exjar"/>
+	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.USER_LIBRARY/exjar"/>
+	<classpathentry exported="true" kind="lib" path="D:/android/eclipse/workspace/libs/android-query.0.26.8.jar"/>
+	<classpathentry exported="true" kind="lib" path="D:/android/eclipse/workspace/libs/gson-2.6.2.jar"/>
+	<classpathentry exported="true" kind="lib" path="D:/android/eclipse/workspace/libs/lib/apache-mime4j-0.6.jar"/>
+	<classpathentry exported="true" kind="lib" path="D:/android/eclipse/workspace/libs/lib/httpclient-4.0.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="D:/android/eclipse/workspace/libs/lib/httpmime-4.0.1.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>
