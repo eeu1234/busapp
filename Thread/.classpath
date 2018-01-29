@@ -6,10 +6,10 @@
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.DEPENDENCIES"/>
 	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.USER_LIBRARY/exjar"/>
-	<classpathentry exported="true" kind="lib" path="F:/android/eclipse/workspace/libs/android-query.0.26.8.jar"/>
-	<classpathentry exported="true" kind="lib" path="F:/android/eclipse/workspace/libs/gson-2.6.2.jar"/>
-	<classpathentry exported="true" kind="lib" path="F:/android/eclipse/workspace/libs/apache-mime4j-0.6.jar"/>
-	<classpathentry exported="true" kind="lib" path="F:/android/eclipse/workspace/libs/httpclient-4.0.1.jar"/>
-	<classpathentry exported="true" kind="lib" path="F:/android/eclipse/workspace/libs/httpmime-4.0.1.jar"/>
+	<classpathentry kind="lib" path="jar/android-query.0.26.8.jar"/>
+	<classpathentry kind="lib" path="jar/apache-mime4j-0.6.jar"/>
+	<classpathentry kind="lib" path="jar/gson-2.6.2.jar"/>
+	<classpathentry kind="lib" path="jar/httpclient-4.0.1.jar"/>
+	<classpathentry kind="lib" path="jar/httpmime-4.0.1.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>
